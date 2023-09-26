@@ -4,7 +4,7 @@ import mongoose, { Schema } from "mongoose";
 import _ from "lodash";
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.use(express.static("public"));
 
 mongoose.connect("mongodb+srv://admin-faizan:Faizan11002200@cluster0.spoi2xa.mongodb.net/todolistDB");
