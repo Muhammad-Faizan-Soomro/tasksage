@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyTask Sage</title>
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+<body class="grid lg:grid-rows-3 h-screen">
+    <nav class="flex bg-green-700 h-14 items-center self-start justify-around">
+        <h1 class="text-2xl font-bold text-white">MyTask Sage</h1>
+        <div class="space-x-10">
+            <a href="/" class="text-lg font-semibold text-white hover:text-cyan-200 hover:border-b-2 hover:border-yellow-500">Today</a>
+            <a href="work" class="text-lg font-semibold text-white hover:text-cyan-200 hover:border-b-2 hover:border-yellow-500">Work</a>
+        </div>
+    </nav>
+    <div class="bg-gray-200 lg:w-[30rem] h-[28rem] place-self-center lg:mb-[6.5rem] rounded-2xl">
+        <div class="bg-black text-yellow-400 h-10 rounded-t-2xl">
+            <% if(locals.title) {%>
+                <h1 class="text-center pt-1 text-lg font-semibold"><%= title %></h1>
+            <% } else {%>
+                <% const days = ["January", "February", "March", "April", "May", "June", "July", "August","September","October","November","December"]; %>
+                <% var today = new Date();  %>
+                <% var dd = String(today.getDate()).padStart(2, '0'); %>
+                <% var mm = days[today.getMonth()]; %>
+                <% var yyyy = today.getFullYear(); %>
+
+                <% today = dd + ' ' + mm + ', ' + yyyy; %>
+                <h1 class="text-center pt-1 text-lg font-semibold">Today: <%= today %></h1>
+            <% } %>
+        </div>
+            <form action="/" class="flex mt-5 justify-evenly" method="post">
+            <input name="task" class="px-5 py-4 rounded-lg bg-cyan-50 outline-green-700 border-green-700 border-[2px]" type="text" placeholder="Enter Your Task" required>
+            <% if(locals.title) {%>
+                <button class="bg-green-400 rounded-lg px-10 cursor-pointer text-white font-semibold" type="submit" name="list" value="<%= title %>">Add Task</button>
+            <% } else { %>
+                <button class="bg-green-400 rounded-lg px-10 cursor-pointer text-white font-semibold" type="submit" value="today" name="list">Add Task</button>
+            <% } %>
+        </form>
+        <div class="mx-10 space-y-6">
+            <% if(locals.tasks) { %>
+                <form action="/delete" method="post">
+                    <% for (let i = 0; i < tasks.length; i++) { %>
+                        <br>
+                        <% if(locals.title) {%>
+                            <input value=<%= tasks[i].id  %> type="checkbox" name=<%= title %> id=<%= i %> onChange="this.form.submit()">
+                        <% }else{ %>
+                            <input value=<%= tasks[i].id  %> type="checkbox" name="today" id=<%= i %> onChange="this.form.submit()">
+                        <% } %>
+                        <label id=<%= i %> class="" for=<%= i  %>><%= tasks[i].name  %></label>
+                    <%} %>
+                </form>
+            <% } %>
+        </div>
+
+    </div>
+    <footer class="bg-green-700 h-40 self-end">
+        <p class="text-center text-white text-lg pt-10">&#169; 2023 Muhammad Faizan Soomro</p>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        $('input[type="checkbox"]').click(function(){
+            if($(this).prop("checked") == true){
+                $('label[for="'+this.id+'"]').addClass("line-through");
+            }
+            else if($(this).prop("checked") == false){
+                $('label[for="'+this.id+'"]').removeClass("line-through");
+            }
+        });
+    </script>
+</body>
+</html>
